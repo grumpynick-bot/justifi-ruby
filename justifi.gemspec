@@ -13,8 +13,6 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://justifi.ai"
   spec.required_ruby_version = ">= 2.4"
 
-  spec.metadata["allowed_push_host"] = "https://rubygems.pkg.github.com"
-
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/justifi-tech/justifi-ruby"
   spec.metadata["github_repo"] = "ssh://github.com/justifi-tech/justifi-ruby"

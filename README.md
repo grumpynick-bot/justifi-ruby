@@ -191,3 +191,26 @@ refunds = refunds.previous_page
 payment = Justifi::Payment.get(payment_id: 'py_xyz')
 refund = Justifi::Refund.get(refund_id: 're_xyz')
 ```
+
+
+## Contributing
+
+### Release a new version of the gem
+
+Follow the steps below to make a release:
+
+1. Increment the version number in `lib/justifi/version.rb`
+2. Run `bundle`
+3. Commit the following file changes to your branch
+  - `Gemfile.lock`
+  - `lib/justifi/version.rb`
+4. Create and Merge your PR to `main`
+
+After this, the `.github/workflows/build_and_release.yml` will tag and release
+the gem to github packages.
+
+
+## Code of Conduct
+
+Everyone interacting in the JustApi project's codebases, issue trackers, chat
+rooms and mailing lists is expected to follow the [code of conduct][].
