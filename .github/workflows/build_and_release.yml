@@ -1,0 +1,53 @@
+name: 📦 Build and Release
+
+on:
+  push:
+    paths:
+      - lib/justifi/version.rb
+
+jobs:
+  build_and_release:
+    name: Package and Release
+    if: github.ref_type == "branch" && github.ref_name == "main"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: 2.6
+
+      - name: Fetch Gem Version
+        id: gem_version
+        run: echo "::set-output name=value::$(ruby -r ./lib/justifi/version.rb -e 'puts Justifi::VERSION')"
+
+      # Combination of bundler's release steps and the steps here:
+      #
+      #   https://github.com/rickstaa/action-create-tag/blob/main/entrypoint.sh
+      #
+      - name: Tag Release
+        id: git_tag
+        env:
+          TAG: v${{ steps.gem_version.outputs.value }}
+          VERSION: ${{ steps.gem_version.outputs.value }}
+        run:
+          git config user.name "JustiFi Machina"
+          git config user.email "justifi.machina@justifi.ai"
+          git tag -a "${TAG}" -m "Version ${VERSION}" "${GITHUB_SHA}"
+          git remote set-url origin "https://justifi-machina:${ secrets.JUSTIFI_MACHINA_GITHUB_TOKEN }@github.com/${GITHUB_REPOSITORY}.git"
+          git push origin refs/tags/${TAG}
+
+      # Steps ripped off from:
+      #
+      #   https://github.com/voxpupuli/puppet-lint_modulesync_configs/blob/master/moduleroot/.github/workflows/release.yml.erb
+      #
+      - name: Build gem
+        run: gem build justifi.gemspec
+
+      - name: Publish gem to rubygems.org
+        env:
+          VERSION: ${{ steps.gem_version.outputs.value }}
+        run: gem push justifi-${VERSION}.gem
