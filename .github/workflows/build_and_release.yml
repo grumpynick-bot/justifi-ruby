@@ -16,7 +16,7 @@ jobs:
             gem_host: https://rubygems.pkg.github.com/${{ github.repository_owner }}
 
     name: 📦 Package and Release
-    if: github.ref_type == 'branch' && github.ref_name == 'main'
+    if: github.ref_type == 'branch' && github.ref_name == 'gem-push-from-fork'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

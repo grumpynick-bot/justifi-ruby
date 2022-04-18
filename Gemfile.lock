@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    justifi (0.3.1)
+    justifi (0.3.1.haxzorz)
 
 GEM
   remote: https://rubygems.org/
